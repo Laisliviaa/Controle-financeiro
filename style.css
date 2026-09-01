@@ -1,0 +1,462 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@500;600;700&display=swap');
+
+:root {
+    --papel: #f7f5fb;
+    --papel-cartao: #f0ebf7;
+    --regua: #d9cfe8;
+    --regua-forte: #b29ed1;
+    --tinta: #2b2138;
+    --tinta-fraca: #6e6180;
+    --couro: #241a35;
+    --couro-2: #3a2856;
+    --dourado: #8b5cf6;
+    --dourado-claro: #e0d4fa;
+    --credito: #1f6b45;
+    --credito-bg: #e3f0e6;
+    --debito: #96302c;
+    --debito-bg: #f7e3e6;
+    --sombra: 0 20px 44px rgba(36, 20, 56, 0.18);
+    --sombra-suave: 0 10px 26px rgba(36, 20, 56, 0.09);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--papel);
+    color: var(--tinta);
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+}
+
+.cabecalho {
+    background: var(--couro);
+    color: #fff;
+    padding: 24px;
+    border-radius: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--sombra);
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+}
+
+.furos {
+    position: absolute;
+    top: 0;
+    left: 20px;
+    display: flex;
+    gap: 8px;
+}
+
+.furos span {
+    width: 8px;
+    height: 12px;
+    background: var(--papel);
+    border-radius: 0 0 4px 4px;
+}
+
+.etiqueta {
+    font-size: 0.85rem;
+    color: var(--dourado-claro);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.cabecalho h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.8rem;
+}
+
+.saldo-label {
+    font-size: 0.85rem;
+    color: var(--dourado-claro);
+    text-align: right;
+}
+
+#saldoAtual {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.6rem;
+    display: block;
+    text-align: right;
+}
+
+/* Abas de Navegação */
+.abas-navegacao {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+    border-bottom: 2px solid var(--regua);
+    padding-bottom: 12px;
+}
+
+.aba-btn {
+    background: transparent;
+    border: none;
+    padding: 10px 18px;
+    font-family: inherit;
+    font-weight: 600;
+    color: var(--tinta-fraca);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.aba-btn:hover {
+    background: var(--papel-cartao);
+    color: var(--tinta);
+}
+
+.aba-btn.ativo {
+    background: var(--dourado);
+    color: #fff;
+}
+
+.conteudo-aba {
+    display: none;
+}
+
+.conteudo-aba.ativo {
+    display: block;
+}
+
+.resumo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.cartao-resumo {
+    background: var(--papel-cartao);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--regua);
+    box-shadow: var(--sombra-suave);
+}
+
+.cartao-resumo span {
+    font-size: 0.9rem;
+    color: var(--tinta-fraca);
+    display: block;
+    margin-bottom: 6px;
+}
+
+.cartao-resumo strong {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.4rem;
+}
+
+.cartao-entrada strong {
+    color: var(--credito);
+}
+
+.cartao-saida strong {
+    color: var(--debito);
+}
+
+.formulario-card, .filtros-card {
+    background: #fff;
+    padding: 24px;
+    border-radius: 16px;
+    border: 1px solid var(--regua);
+    box-shadow: var(--sombra-suave);
+    margin-bottom: 24px;
+}
+
+.formulario-card h2, .filtros-card h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+}
+
+.linha-formulario {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.campo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.campo label, .campo-filtro label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--tinta-fraca);
+}
+
+.campo input, .campo select, .campo-filtro select, .campo-filtro input {
+    padding: 10px 14px;
+    border: 1px solid var(--regua);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    background: var(--papel);
+    color: var(--tinta);
+}
+
+.campo input:focus, .campo select:focus, .campo-filtro select:focus, .campo-filtro input:focus {
+    outline: none;
+    border-color: var(--dourado);
+    background: #fff;
+}
+
+.botoes-form {
+    display: flex;
+    gap: 12px;
+}
+
+button.primario, button.secundario {
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: background 0.2s;
+}
+
+button.primario {
+    background: var(--dourado);
+    color: #fff;
+}
+
+button.primario:hover {
+    background: #7c3aed;
+}
+
+button.secundario {
+    background: var(--regua);
+    color: var(--tinta);
+}
+
+button.secundario:hover {
+    background: var(--regua-forte);
+}
+
+/* Botões de filtro no estilo pílula */
+.filtro {
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--regua);
+    background: transparent;
+    color: var(--tinta-fraca);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filtro:hover {
+    border-color: var(--regua-forte);
+    color: var(--tinta);
+}
+
+.filtro.ativo {
+    background: var(--couro);
+    color: #fff;
+    border-color: var(--couro);
+}
+
+/* Container único para os filtros avançados */
+.filtros-container-unico {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.campo-filtro {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Botão centralizado na área de filtros */
+.filtros-botoes-inferiores {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+.filtros-botoes-inferiores #btnLimparFiltros {
+    width: 50%;
+    min-width: 200px;
+}
+
+.filtros-botoes-periodo {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 16px;
+}
+
+.cartao-acao-filtro {
+    border: 1px solid var(--regua);
+    cursor: pointer;
+    text-align: center;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--tinta);
+    background: var(--papel-cartao);
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: var(--sombra-suave);
+}
+
+.cartao-acao-filtro:hover {
+    background: var(--regua-forte);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.cartao-acao-filtro.ativo {
+    background: var(--couro);
+    color: #fff;
+    border-color: var(--couro);
+}
+
+.lista {
+    background: #fff;
+    padding: 24px;
+    border-radius: 16px;
+    border: 1px solid var(--regua);
+    box-shadow: var(--sombra-suave);
+}
+
+.lista-cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.lista-cabecalho h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+}
+
+.lista-cabecalho span {
+    font-size: 0.85rem;
+    color: var(--tinta-fraca);
+}
+
+.item-movimentacao {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--regua);
+}
+
+.item-movimentacao:last-child {
+    border-bottom: none;
+}
+
+.item-info strong {
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 3px;
+}
+
+.item-info span {
+    font-size: 0.82rem;
+    color: var(--tinta-fraca);
+}
+
+.item-valores {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.item-valores strong {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.05rem;
+}
+
+.item-valores strong.entrada {
+    color: var(--credito);
+}
+
+.item-valores strong.saida {
+    color: var(--debito);
+}
+
+.item-acoes {
+    display: flex;
+    gap: 8px;
+}
+
+.item-acoes button {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    border: none;
+    font-weight: 600;
+}
+
+/* Botão Editar amarelo na primeira página */
+.editar {
+    color: #241a35;
+    background: #f7c948;
+    border: 1px solid #d9a913;
+}
+
+.editar:hover {
+    background: #f3bd25;
+}
+
+.excluir {
+    color: #fff;
+    background: #dc2626;
+    border: 1px solid #b91c1c;
+}
+
+.excluir:hover {
+    background: #c11f1f;
+}
+
+.vazio {
+    padding: 30px;
+    color: var(--tinta-fraca);
+    font-style: italic;
+    text-align: center;
+    border: 1px dashed var(--regua-forte);
+    border-radius: 8px;
+    background: transparent;
+}
+
+@media (max-width: 720px) {
+    body {
+        padding: 22px 12px;
+    }
+    .cabecalho, .resumo, .linha-formulario, .filtros-botoes-inferiores, .filtros-botoes-periodo {
+        flex-direction: column;
+        grid-template-columns: 1fr;
+    }
+    #saldoAtual {
+        text-align: left;
+    }
+}

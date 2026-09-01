@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle Financeiro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- CABEÇALHO -->
+        <header class="cabecalho">
+
+            <div class="furos">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <div>
+                <div class="etiqueta">Controle financeiro</div>
+                <h1>Minhas Finanças</h1>
+            </div>
+
+            <div>
+                <span class="saldo-label">Saldo atual</span>
+                <strong id="saldoAtual">R$ 0,00</strong>
+            </div>
+
+        </header>
+
+
+        <!-- ABAS -->
+        <nav class="abas-navegacao">
+
+            <button type="button" class="aba-btn ativo" data-aba="movimentacoes">
+                Movimentações
+            </button>
+
+            <button type="button" class="aba-btn" data-aba="categorias">
+                Categorias
+            </button>
+
+            <button type="button" class="aba-btn" data-aba="fatura">
+                Fatura
+            </button>
+
+        </nav>
+
+
+        <!-- ================================================= -->
+        <!-- ABA MOVIMENTAÇÕES -->
+        <!-- ================================================= -->
+
+        <section id="abaMovimentacoes" class="conteudo-aba ativo">
+
+            <!-- RESUMO -->
+
+            <div class="resumo">
+
+                <div class="cartao-resumo cartao-entrada">
+                    <span>Total de entradas</span>
+                    <strong id="totalEntradas">R$ 0,00</strong>
+                </div>
+
+                <div class="cartao-resumo cartao-saida">
+                    <span>Total de saídas</span>
+                    <strong id="totalSaidas">R$ 0,00</strong>
+                </div>
+
+            </div>
+
+
+            <!-- FORMULÁRIO -->
+
+            <div class="formulario-card">
+
+                <h2>Nova movimentação</h2>
+
+                <form id="formMovimentacao">
+
+                    <!-- ID OCULTO -->
+                    <input type="hidden" id="movimentacaoId">
+
+
+                    <!-- DESCRIÇÃO E VALOR -->
+
+                    <div class="linha-formulario">
+
+                        <div class="campo">
+
+                            <label for="descricao">
+                                Descrição
+                            </label>
+
+                            <input type="text" id="descricao" placeholder="Ex.: Mercado, salário..." required>
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label for="valor">
+                                Valor
+                            </label>
+
+                            <input type="text" id="valor" value="0,00" inputmode="decimal" required>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- TIPO E DATA -->
+
+                    <div class="linha-formulario">
+
+                        <div class="campo">
+
+                            <label for="tipo">
+                                Tipo
+                            </label>
+
+                            <select id="tipo" required>
+
+                                <option value="" disabled selected>
+                                    Selecione
+                                </option>
+
+                                <option value="entrada">
+                                    Entrada
+                                </option>
+
+                                <option value="saida">
+                                    Saída
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label for="data">
+                                Data
+                            </label>
+
+                            <input type="date" id="data" required>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CATEGORIA E PAGAMENTO -->
+
+                    <div class="linha-formulario">
+
+                        <div class="campo">
+
+                            <label for="categoria">
+                                Categoria
+                            </label>
+
+                            <select id="categoria" required>
+
+                                <option value="" disabled selected>
+                                    Selecione
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label for="meioPagamento">
+                                Meio de pagamento
+                            </label>
+
+                            <select id="meioPagamento" required>
+
+                                <option value="" disabled selected>
+                                    Selecione
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PARCELAS -->
+
+                    <div class="linha-formulario" id="campoParcelasWrapper" style="display: none;">
+
+                        <div class="campo">
+
+                            <label for="parcelas">
+                                Número de parcelas
+                            </label>
+
+                            <input type="number" id="parcelas" min="1" max="48" value="1">
+
+                            <small>
+                                Disponível somente para compras no crédito.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BOTÕES -->
+
+                    <div class="botoes-form">
+
+                        <button type="submit" id="btnSalvar" class="primario">
+                            Salvar movimentação
+                        </button>
+
+                        <button type="button" id="btnCancelar" class="secundario" style="display: none;">
+                            Cancelar
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <!-- FILTROS -->
+
+            <div class="filtros-card">
+
+                <h2>Filtros</h2>
+
+
+                <!-- TIPO -->
+
+                <div class="filtros-tipo">
+
+                    <button type="button" class="filtro ativo" data-filtro="todas">
+                        Todas
+                    </button>
+
+                    <button type="button" class="filtro" data-filtro="entrada">
+                        Entradas
+                    </button>
+
+                    <button type="button" class="filtro" data-filtro="saida">
+                        Saídas
+                    </button>
+
+                </div>
+                <!-- FILTROS AVANÇADOS -->
+
+                <div class="filtros-container-unico" style="margin-top: 16px;">
+
+                    <div class="campo-filtro">
+
+                        <label for="filtroCategoria">
+                            Categoria
+                        </label>
+
+                        <select id="filtroCategoria">
+
+                            <option value="todas">
+                                Todas
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="campo-filtro">
+
+                        <label for="filtroMeioPagamento">
+                            Meio de pagamento
+                        </label>
+
+                        <select id="filtroMeioPagamento">
+
+                            <option value="todas">
+                                Todos
+                            </option>
+
+                            <option value="credito">Crédito</option>
+                            <option value="debito">Débito</option>
+                            <option value="pix">Pix</option>
+                            <option value="boleto">Boleto</option>
+                            <option value="dinheiro">Dinheiro</option>
+                            <option value="transferencia">Transferência</option>
+                            <option value="deposito">Depósito</option>
+                            <option value="outros">Outros</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="campo-filtro">
+
+                        <label for="filtroDataInicio">
+                            Data inicial
+                        </label>
+
+                        <input type="date" id="filtroDataInicio">
+
+                    </div>
+
+
+                    <div class="campo-filtro">
+
+                        <label for="filtroDataFim">
+                            Data final
+                        </label>
+
+                        <input type="date" id="filtroDataFim">
+
+                    </div>
+
+                </div>
+
+
+                <div class="filtros-botoes-inferiores">
+
+                    <button type="button" id="btnLimparFiltros" class="secundario">
+                        Limpar filtros
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- LISTA -->
+
+            <div class="lista">
+
+                <div class="lista-cabecalho">
+
+                    <h2>Movimentações</h2>
+
+                    <span id="textoFiltro">
+                        Mostrando 0 de 0 movimentações
+                    </span>
+
+                </div>
+
+                <div id="listaMovimentacoes"></div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================================================= -->
+        <!-- ABA CATEGORIAS -->
+        <!-- ================================================= -->
+
+        <section id="abaCategorias" class="conteudo-aba">
+
+            <div class="formulario-card">
+
+                <h2 id="tituloFormCategoria">
+                    Adicionar nova categoria
+                </h2>
+
+                <form id="formCategoria">
+
+                    <input type="hidden" id="categoriaIndexEdicao">
+
+                    <div class="linha-formulario">
+
+                        <div class="campo">
+
+                            <label for="nomeNovaCategoria">
+                                Nome da categoria
+                            </label>
+
+                            <input type="text" id="nomeNovaCategoria" placeholder="Ex.: Estudos" required>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="botoes-form">
+
+                        <button type="submit" id="btnSalvarCategoria" class="primario">
+                            Cadastrar Categoria
+                        </button>
+
+                        <button type="button" id="btnCancelarCategoria" class="secundario" style="display: none;">
+                            Cancelar
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <div class="lista">
+
+                <div class="lista-cabecalho">
+
+                    <h2>Minhas categorias</h2>
+
+                </div>
+
+                <div id="listaCategorias"></div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================================================= -->
+        <!-- ABA FATURA -->
+        <!-- ================================================= -->
+
+        <section id="abaFatura" class="conteudo-aba">
+
+            <div class="resumo">
+
+                <div class="cartao-resumo cartao-saida">
+
+                    <span>
+                        Total da fatura
+                    </span>
+
+                    <strong id="totalFaturaCredito">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="filtros-card">
+
+                <h2>
+                    Período da fatura
+                </h2>
+                <!-- FILTRO ESPECÍFICO DE MÊS E ANO (SEM DIA) -->
+                <div class="linha-formulario" style="margin-top: 16px; margin-bottom: 0;">
+                    <div class="campo" style="max-width: 250px;">
+                        <label for="filtroMesAnoFatura">Selecionar Mês/Ano Específico</label>
+                        <input type="month" id="filtroMesAnoFatura">
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="lista">
+
+                <div class="lista-cabecalho">
+
+                    <h2>
+                        Compras no crédito
+                    </h2>
+
+                </div>
+
+                <div id="listaFatura"></div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
