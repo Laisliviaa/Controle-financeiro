@@ -79,7 +79,7 @@ let categorias =
     ];
 
 let filtroTipoAtual = "todas";
-let filtroPeriodoMesesPagina1 = 0; // Padrão: Este mês (0)
+let filtroPeriodoMesesPagina1 = 0;
 let filtroCategoriaAtual = "todas";
 let filtroMeioPagamentoAtual = "todas";
 let filtroDataInicioAtual = "";
