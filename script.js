@@ -1,7 +1,3 @@
-// ============================================================
-// CONTROLE DE GASTOS PESSOAIS
-// ============================================================
-
 const form = document.querySelector("#formMovimentacao");
 const campoId = document.querySelector("#movimentacaoId");
 const campoDescricao = document.querySelector("#descricao");
@@ -20,98 +16,54 @@ const listaMovimentacoes = document.querySelector("#listaMovimentacoes");
 const listaFatura = document.querySelector("#listaFatura");
 const textoFiltro = document.querySelector("#textoFiltro");
 
-// -------------------------
-// FILTROS
-// -------------------------
-
 const botoesFiltroTipo =
     document.querySelectorAll(".filtros-tipo .filtro:not(#filtrosPeriodoPagina1 .filtro, #filtrosPeriodoFatura .filtro)");
-
 const botoesPeriodoPagina1 =
     document.querySelectorAll("#filtrosPeriodoPagina1 .filtro");
-
 const filtroCategoria =
     document.querySelector("#filtroCategoria");
-
 const filtroMeioPagamento =
     document.querySelector("#filtroMeioPagamento");
-
 const filtroDataInicio =
     document.querySelector("#filtroDataInicio");
-
 const filtroDataFim =
     document.querySelector("#filtroDataFim");
-
 const btnLimparFiltros =
     document.querySelector("#btnLimparFiltros");
 
-// -------------------------
-// RESUMO
-// -------------------------
-
 const saldoAtual =
     document.querySelector("#saldoAtual");
-
 const totalEntradas =
     document.querySelector("#totalEntradas");
-
 const totalSaidas =
     document.querySelector("#totalSaidas");
-
 const totalFaturaCredito =
     document.querySelector("#totalFaturaCredito");
 
-// -------------------------
-// ABAS
-// -------------------------
-
 const abasBtns =
     document.querySelectorAll(".aba-btn");
-
 const conteudosAbas =
     document.querySelectorAll(".conteudo-aba");
 
-// -------------------------
-// CATEGORIAS
-// -------------------------
-
 const formCategoria =
     document.querySelector("#formCategoria");
-
 const tituloFormCategoria =
     document.querySelector("#tituloFormCategoria");
-
 const nomeNovaCategoria =
     document.querySelector("#nomeNovaCategoria");
-
 const categoriaIndexEdicao =
     document.querySelector("#categoriaIndexEdicao");
-
 const btnSalvarCategoria =
     document.querySelector("#btnSalvarCategoria");
-
 const btnCancelarCategoria =
     document.querySelector("#btnCancelarCategoria");
-
 const listaCategorias =
     document.querySelector("#listaCategorias");
 
-// -------------------------
-// FATURA
-// -------------------------
-
 const botoesPeriodoFatura =
-    document.querySelectorAll(
-        "#filtrosPeriodoFatura .filtro"
-    );
-
+    document.querySelectorAll("#filtrosPeriodoFatura .filtro");
 const filtroMesAnoFatura =
     document.querySelector("#filtroMesAnoFatura");
-
-
-// ============================================================
-// DADOS
-// ============================================================
 
 let movimentacoes =
     JSON.parse(localStorage.getItem("movimentacoes")) || [];
@@ -126,11 +78,6 @@ let categorias =
         "Outros"
     ];
 
-
-// ============================================================
-// FILTROS ATUAIS
-// ============================================================
-
 let filtroTipoAtual = "todas";
 let filtroPeriodoMesesPagina1 = 0; // Padrão: Este mês (0)
 let filtroCategoriaAtual = "todas";
@@ -138,13 +85,8 @@ let filtroMeioPagamentoAtual = "todas";
 let filtroDataInicioAtual = "";
 let filtroDataFimAtual = "";
 
-let mesesFaturaSelecionados = 0; // Padrão: Este mês (0)
+let mesesFaturaSelecionados = 0;
 let filtroMesAnoFaturaEspecifico = "";
-
-
-// ============================================================
-// UTILITÁRIOS
-// ============================================================
 
 function formatarMoeda(valor) {
     return Number(valor).toLocaleString(
@@ -183,11 +125,6 @@ function converterValorParaNumero(valorStr) {
     return parseFloat(limpo) || 0;
 }
 
-
-// ============================================================
-// NOME DOS MEIOS DE PAGAMENTO
-// ============================================================
-
 function nomeMeioPagamento(meio) {
     const nomes = {
         credito: "Crédito",
@@ -202,11 +139,6 @@ function nomeMeioPagamento(meio) {
 
     return nomes[meio] || meio;
 }
-
-
-// ============================================================
-// FORMATAÇÃO DO VALOR
-// ============================================================
 
 campoValor.addEventListener("input", (e) => {
     let digits =
@@ -228,11 +160,6 @@ campoValor.addEventListener("input", (e) => {
             }
         );
 });
-
-
-// ============================================================
-// DATAS DE PARCELAMENTO
-// ============================================================
 
 function adicionarMesSeguro(data, quantidadeMeses) {
     const ano = data.getFullYear();
@@ -259,11 +186,6 @@ function adicionarMesSeguro(data, quantidadeMeses) {
 
     return novaData;
 }
-
-
-// ============================================================
-// NAVEGAÇÃO POR ABAS
-// ============================================================
 
 abasBtns.forEach(btn => {
     btn.addEventListener("click", () => {
@@ -299,11 +221,6 @@ abasBtns.forEach(btn => {
         }
     });
 });
-
-
-// ============================================================
-// MEIOS DE PAGAMENTO
-// ============================================================
 
 function atualizarMeiosPagamento(valorSelecionado = "") {
     if (!campoMeioPagamento) {
@@ -357,11 +274,6 @@ function atualizarMeiosPagamento(valorSelecionado = "") {
     verificarExibicaoParcelas();
 }
 
-
-// ============================================================
-// EXIBIÇÃO DAS PARCELAS
-// ============================================================
-
 function verificarExibicaoParcelas() {
     if (
         campoTipo.value === "saida" &&
@@ -390,11 +302,6 @@ campoMeioPagamento.addEventListener(
     "change",
     verificarExibicaoParcelas
 );
-
-
-// ============================================================
-// CATEGORIAS
-// ============================================================
 
 function atualizarSelectsCategorias() {
     [campoCategoria, filtroCategoria]
@@ -437,11 +344,6 @@ function atualizarSelectsCategorias() {
         JSON.stringify(categorias)
     );
 }
-
-
-// ============================================================
-// FORMULÁRIO DE CATEGORIA
-// ============================================================
 
 formCategoria.addEventListener(
     "submit",
@@ -520,11 +422,6 @@ formCategoria.addEventListener(
         renderizarTela();
     }
 );
-
-
-// ============================================================
-// RENDERIZAR CATEGORIAS
-// ============================================================
 
 function renderizarCategorias() {
     if (!listaCategorias) {
@@ -658,11 +555,6 @@ window.excluirCategoria =
 
         renderizarTela();
     };
-
-
-// ============================================================
-// SALVAR / EDITAR MOVIMENTAÇÃO
-// ============================================================
 
 form.addEventListener(
     "submit",
@@ -918,11 +810,6 @@ form.addEventListener(
     }
 );
 
-
-// ============================================================
-// LIMPAR FORMULÁRIO
-// ============================================================
-
 function limparFormulario() {
     form.reset();
     campoId.value = "";
@@ -958,11 +845,6 @@ btnCancelar.addEventListener(
     "click",
     limparFormulario
 );
-
-
-// ============================================================
-// EDITAR MOVIMENTAÇÃO
-// ============================================================
 
 window.editarMovimentacao =
     function(id) {
@@ -1065,11 +947,6 @@ window.editarMovimentacao =
         });
     };
 
-
-// ============================================================
-// EXCLUIR MOVIMENTAÇÃO
-// ============================================================
-
 window.excluirMovimentacao =
     function(id) {
         const movimentacao =
@@ -1128,11 +1005,6 @@ window.excluirMovimentacao =
         renderizarTela();
     };
 
-
-// ============================================================
-// FILTRO POR TIPO
-// ============================================================
-
 botoesFiltroTipo.forEach(
     botao => {
         botao.addEventListener(
@@ -1159,11 +1031,6 @@ botoesFiltroTipo.forEach(
         );
     }
 );
-
-
-// ============================================================
-// FILTRO POR PERÍODO (PÁGINA 1)
-// ============================================================
 
 botoesPeriodoPagina1.forEach(
     botao => {
@@ -1206,11 +1073,6 @@ botoesPeriodoPagina1.forEach(
     }
 );
 
-
-// ============================================================
-// FILTRO DE FATURA
-// ============================================================
-
 botoesPeriodoFatura.forEach(
     botao => {
         botao.addEventListener(
@@ -1235,7 +1097,6 @@ botoesPeriodoFatura.forEach(
                         10
                     );
 
-                // Limpa o input de mês/ano específico ao usar os botões rápidos
                 if (filtroMesAnoFatura) {
                     filtroMesAnoFatura.value = "";
                 }
@@ -1249,9 +1110,8 @@ botoesPeriodoFatura.forEach(
 
 if (filtroMesAnoFatura) {
     filtroMesAnoFatura.addEventListener("change", () => {
-        filtroMesAnoFaturaEspecifico = filtroMesAnoFatura.value; // Formato "YYYY-MM"
+        filtroMesAnoFaturaEspecifico = filtroMesAnoFatura.value;
         
-        // Remove a seleção ativa dos botões rápidos ao usar o input de mês/ano
         if (filtroMesAnoFaturaEspecifico) {
             botoesPeriodoFatura.forEach(b => b.classList.remove("ativo"));
         }
@@ -1259,11 +1119,6 @@ if (filtroMesAnoFatura) {
         renderizarTela();
     });
 }
-
-
-// ============================================================
-// FILTROS AVANÇADOS
-// ============================================================
 
 filtroCategoria.addEventListener(
     "change",
@@ -1307,11 +1162,6 @@ filtroDataFim.addEventListener(
         renderizarTela();
     }
 );
-
-
-// ============================================================
-// LIMPAR FILTROS
-// ============================================================
 
 btnLimparFiltros.addEventListener(
     "click",
@@ -1358,7 +1208,6 @@ btnLimparFiltros.addEventListener(
                 )
         );
 
-        // Ativa o botão "Este mês" por padrão ao limpar
         const botaoEsteMes = document.querySelector('#filtrosPeriodoPagina1 .filtro[data-periodo="0"]');
         if (botaoEsteMes) {
             botaoEsteMes.classList.add("ativo");
@@ -1379,11 +1228,6 @@ btnLimparFiltros.addEventListener(
         renderizarTela();
     }
 );
-
-
-// ============================================================
-// RENDERIZAR TELA
-// ============================================================
 
 function renderizarTela() {
     atualizarSelectsCategorias();
@@ -1573,14 +1417,9 @@ function renderizarTela() {
             saldo
         );
 
-    // ========================================================
-    // FATURA DE CRÉDITO
-    // ========================================================
-
     let faturaCredito = [];
 
     if (filtroMesAnoFaturaEspecifico) {
-        // Filtra pelo mês e ano escolhido no input type="month" (YYYY-MM)
         faturaCredito =
             movimentacoes.filter(
                 m => {
@@ -1592,7 +1431,6 @@ function renderizarTela() {
                 }
             );
     } else {
-        // Filtra pelos botões rápidos estilo pílula (Este mês, Próximo mês, Próximo ano)
         const hoje = new Date();
         let dataInicioFatura = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
         let dataFimFatura = new Date(hoje.getFullYear(), hoje.getMonth() + mesesFaturaSelecionados + 1, 0);
@@ -1694,11 +1532,6 @@ function renderizarTela() {
         `Mostrando ${filtradas.length} de ${movimentacoes.length} movimentações`;
 }
 
-
-// ============================================================
-// INICIALIZAÇÃO
-// ============================================================
-
 campoData.value =
     paraISO(new Date());
 
@@ -1708,7 +1541,6 @@ campoValor.value =
 atualizarMeiosPagamento();
 verificarExibicaoParcelas();
 
-// Ativa o botão "Este mês" na inicialização da página
 const botaoEsteMesP1 = document.querySelector('#filtrosPeriodoPagina1 .filtro[data-periodo="0"]');
 if (botaoEsteMesP1) {
     botaoEsteMesP1.classList.add("ativo");
