@@ -1,3 +1,5 @@
+// Seleção dos elementos principais do HTML.
+// Esses elementos serão usados para ler os dados digitados e atualizar a tela.
 const form = document.querySelector("#formMovimentacao");
 const campoId = document.querySelector("#movimentacaoId");
 const campoDescricao = document.querySelector("#descricao");
@@ -65,6 +67,8 @@ const botoesPeriodoFatura =
 const filtroMesAnoFatura =
     document.querySelector("#filtroMesAnoFatura");
 
+// Dados principais da aplicação.
+// Primeiro tentamos carregar do localStorage; se não existir nada salvo, usamos valores iniciais.
 let movimentacoes =
     JSON.parse(localStorage.getItem("movimentacoes")) || [];
 
@@ -88,6 +92,7 @@ let filtroDataFimAtual = "";
 let mesesFaturaSelecionados = 0;
 let filtroMesAnoFaturaEspecifico = "";
 
+// Formata números para o padrão de moeda brasileira.
 function formatarMoeda(valor) {
     return Number(valor).toLocaleString(
         "pt-BR",
@@ -103,7 +108,7 @@ function paraISO(data) {
     return data.toISOString().split("T")[0];
 }
 
-
+// Normaliza textos para comparar categorias sem diferenciar maiúsculas, minúsculas ou acentos.
 function normalizarTexto(texto) {
     return texto
         .trim()
@@ -125,6 +130,7 @@ function converterValorParaNumero(valorStr) {
     return parseFloat(limpo) || 0;
 }
 
+// Mostra o nome legível do meio de pagamento salvo no objeto.
 function nomeMeioPagamento(meio) {
     const nomes = {
         credito: "Crédito",
@@ -140,6 +146,7 @@ function nomeMeioPagamento(meio) {
     return nomes[meio] || meio;
 }
 
+// Máscara do campo de valor: enquanto digita, o número já fica no formato 0,00.
 campoValor.addEventListener("input", (e) => {
     let digits =
         e.target.value.replace(/\D/g, "");
@@ -161,6 +168,8 @@ campoValor.addEventListener("input", (e) => {
         );
 });
 
+// Soma meses sem quebrar datas como dia 31 em meses menores.
+// Usada principalmente para distribuir compras parceladas.
 function adicionarMesSeguro(data, quantidadeMeses) {
     const ano = data.getFullYear();
     const mes = data.getMonth();
@@ -187,6 +196,7 @@ function adicionarMesSeguro(data, quantidadeMeses) {
     return novaData;
 }
 
+// Controle das abas: remove a aba ativa atual e mostra a aba clicada.
 abasBtns.forEach(btn => {
     btn.addEventListener("click", () => {
         abasBtns.forEach(b =>
@@ -222,6 +232,8 @@ abasBtns.forEach(btn => {
     });
 });
 
+// Atualiza os meios de pagamento disponíveis conforme o tipo da movimentação.
+// Entradas e saídas possuem opções diferentes.
 function atualizarMeiosPagamento(valorSelecionado = "") {
     if (!campoMeioPagamento) {
         return;
@@ -274,6 +286,7 @@ function atualizarMeiosPagamento(valorSelecionado = "") {
     verificarExibicaoParcelas();
 }
 
+// O campo de parcelas só aparece quando for saída no crédito.
 function verificarExibicaoParcelas() {
     if (
         campoTipo.value === "saida" &&
@@ -303,6 +316,7 @@ campoMeioPagamento.addEventListener(
     verificarExibicaoParcelas
 );
 
+// Preenche os selects de categoria no formulário e nos filtros.
 function atualizarSelectsCategorias() {
     [campoCategoria, filtroCategoria]
         .forEach(select => {
@@ -345,6 +359,7 @@ function atualizarSelectsCategorias() {
     );
 }
 
+// Cadastro e edição de categorias personalizadas.
 formCategoria.addEventListener(
     "submit",
     (e) => {
@@ -423,6 +438,7 @@ formCategoria.addEventListener(
     }
 );
 
+// Monta a lista visual das categorias cadastradas.
 function renderizarCategorias() {
     if (!listaCategorias) {
         return;
@@ -497,6 +513,7 @@ window.editarCategoria =
     };
 
 
+// Limpa o formulário de categoria e volta para o modo "cadastrar".
 function limparFormularioCategoria() {
     categoriaIndexEdicao.value = "";
     nomeNovaCategoria.value = "";
@@ -556,6 +573,8 @@ window.excluirCategoria =
         renderizarTela();
     };
 
+// Cadastro e atualização de movimentações.
+// Aqui os dados do formulário são validados e salvos no array de movimentações.
 form.addEventListener(
     "submit",
     (e) => {
@@ -626,6 +645,7 @@ form.addEventListener(
         }
 
         if (id) {
+            // Se existe ID, estamos editando uma movimentação já cadastrada.
             const movimentacao =
                 movimentacoes.find(
                     m => m.id == id
@@ -638,6 +658,7 @@ form.addEventListener(
             if (
                 movimentacao.grupoParcelamento
             ) {
+                // Se era uma compra parcelada, recriamos todas as parcelas atualizadas.
                 const grupo =
                     movimentacao.grupoParcelamento;
 
@@ -697,6 +718,7 @@ form.addEventListener(
                     });
                 }
             } else {
+                // Atualização de uma movimentação comum usando map() e spread operator.
                 movimentacoes =
                     movimentacoes.map(
                         m => {
@@ -728,6 +750,7 @@ form.addEventListener(
                 meioPagamento === "credito" &&
                 parcelas > 1
             ) {
+                // Nova compra parcelada: cria uma movimentação para cada parcela.
                 const grupoParcelamento =
                     `parcelamento_${Date.now()}_${Math.random()
                         .toString(36)
@@ -779,6 +802,7 @@ form.addEventListener(
                     });
                 }
             } else {
+                // Nova movimentação simples, sem parcelamento.
                 movimentacoes.push({
                     id:
                         Date.now() +
@@ -810,6 +834,7 @@ form.addEventListener(
     }
 );
 
+// Volta o formulário de movimentação ao estado inicial.
 function limparFormulario() {
     form.reset();
     campoId.value = "";
@@ -848,6 +873,7 @@ btnCancelar.addEventListener(
 
 window.editarMovimentacao =
     function(id) {
+        // Busca a movimentação clicada e coloca seus dados de volta no formulário.
         const mov =
             movimentacoes.find(
                 m => m.id == id
@@ -949,6 +975,7 @@ window.editarMovimentacao =
 
 window.excluirMovimentacao =
     function(id) {
+        // Remove uma movimentação comum ou todas as parcelas de uma compra parcelada.
         const movimentacao =
             movimentacoes.find(
                 m => m.id == id
@@ -1005,6 +1032,7 @@ window.excluirMovimentacao =
         renderizarTela();
     };
 
+// Filtros por tipo: todas, entradas ou saídas.
 botoesFiltroTipo.forEach(
     botao => {
         botao.addEventListener(
@@ -1032,6 +1060,7 @@ botoesFiltroTipo.forEach(
     }
 );
 
+// Filtro rápido de período na aba de movimentações.
 botoesPeriodoPagina1.forEach(
     botao => {
         botao.addEventListener(
@@ -1073,6 +1102,7 @@ botoesPeriodoPagina1.forEach(
     }
 );
 
+// Filtro rápido de período na aba de fatura.
 botoesPeriodoFatura.forEach(
     botao => {
         botao.addEventListener(
@@ -1109,6 +1139,7 @@ botoesPeriodoFatura.forEach(
 );
 
 if (filtroMesAnoFatura) {
+    // Filtro específico de mês/ano para a fatura do cartão.
     filtroMesAnoFatura.addEventListener("change", () => {
         filtroMesAnoFaturaEspecifico = filtroMesAnoFatura.value;
         
@@ -1120,6 +1151,7 @@ if (filtroMesAnoFatura) {
     });
 }
 
+// Filtros adicionais da aba de movimentações.
 filtroCategoria.addEventListener(
     "change",
     () => {
@@ -1163,6 +1195,7 @@ filtroDataFim.addEventListener(
     }
 );
 
+// Limpa todos os filtros e volta para a visualização padrão.
 btnLimparFiltros.addEventListener(
     "click",
     () => {
@@ -1229,10 +1262,13 @@ btnLimparFiltros.addEventListener(
     }
 );
 
+// Função central da tela.
+// Ela aplica filtros, monta as listas e recalcula totais sempre que os dados mudam.
 function renderizarTela() {
     atualizarSelectsCategorias();
     renderizarCategorias();
 
+    // Aplica todos os filtros selecionados sobre o array de movimentações.
     let filtradas =
         movimentacoes.filter(
             m => {
@@ -1292,6 +1328,7 @@ function renderizarTela() {
 
     listaMovimentacoes.innerHTML = "";
 
+    // Monta a lista de movimentações que aparece na tela.
     if (
         filtradas.length === 0
     ) {
@@ -1374,6 +1411,7 @@ function renderizarTela() {
         );
     }
 
+    // Calcula totais usando filter() para separar os tipos e reduce() para somar valores.
     const somaEntradas =
         movimentacoes
             .filter(
@@ -1417,6 +1455,7 @@ function renderizarTela() {
             saldo
         );
 
+    // Monta a fatura considerando apenas saídas pagas no crédito.
     let faturaCredito = [];
 
     if (filtroMesAnoFaturaEspecifico) {
@@ -1532,6 +1571,7 @@ function renderizarTela() {
         `Mostrando ${filtradas.length} de ${movimentacoes.length} movimentações`;
 }
 
+// Configuração inicial da página ao abrir o projeto.
 campoData.value =
     paraISO(new Date());
 
